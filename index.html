@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-language" content="zh-Hant-TW" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>WEEK2 API串接</title>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="" />
+  <meta property="og:title" content="" />
+  <meta property="og:description" content="" />
+  <meta property="og:image" content="" />
+  <meta property="og:url" content="" />
+  <link rel="stylesheet" href="vendor/css/bootstrap.min.css" type="text/css" />
+  <link rel="stylesheet" href="css/styles.css" type="text/css" />
+</head>
+
+<body>
+  <div class="document">
+    <div class="banner" style="background-image: url('./images/banner.jpg');"></div>
+
+    <div class="container">
+      <h2 class="h2" style="margin-top: 15px;">產品列表</h2>
+      <div class="row">
+        <div class="col-lg-3 col-md-12">
+          <div class="card">
+            <div class="card-header">
+              分類
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">咖啡器具</li>
+              <li class="list-group-item">咖啡豆</li>
+              <li class="list-group-item">其它</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-9 col-md-12">
+          <div class="row" id="prodCon"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script src="vendor/js/axios.min.js"></script>
+  <script>
+    ; (function (global) {
+
+      let obj = {
+        data: {
+          uuid: 'e6527241-dd52-4bd8-94eb-eb0e02127c72',
+          apiState: 'https://course-ec-api.hexschool.io',
+          products: []
+        },
+        getData() {
+          console.log('得到資料');
+          let vm = this;
+          let url = `${vm.data.apiState}/api/${vm.data.uuid}/ec/products`;
+
+          axios.get(url)
+            .then(function (res) {
+              vm.data.products = res.data.data;
+              vm.render();
+            });
+        },
+        render() {
+          console.log('render');
+          let prodCon = document.querySelector('#prodCon');
+          let products = this.data.products;
+          console.log(products);
+
+          let str = '';
+          products.forEach(function (item) {
+            str += `
+            <div class="col-md-4">
+              <div class="card prod-block">
+                <img src="${item.imageUrl}" class="card-img-top prod__pic" alt="">
+                <div class="card-body">
+                  <h4 class="card-title prod__title">${item.title}</h4>
+                  <p class="card-text prod__text">${item.content}</p>
+                  <p class="prod__price">
+                    <span class="line-through prod__price--small">原價: ${item.origin_price}</span>
+                    售價: ${item.price}
+                  </p>
+                  <div class="text-right">
+                    <a href="#" class="btn btn-primary prod__btn">加入購物車</a>
+                  </div>
+                </div>
+              </div>
+            </div>`;
+          });
+          prodCon.innerHTML = str;
+        },
+      };
+
+      obj.getData();
+
+    }(window));
+  </script>
+</body>
+
+</html>

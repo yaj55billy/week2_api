@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-language" content="zh-Hant-TW" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>WEEK2 練習 API get、新增、修改、刪除</title>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="" />
+  <meta property="og:title" content="" />
+  <meta property="og:description" content="" />
+  <meta property="og:image" content="" />
+  <meta property="og:url" content="" />
+  <link rel="stylesheet" href="vendor/css/bootstrap.min.css" type="text/css" />
+  <link rel="stylesheet" href="css/styles.css" type="text/css" />
+</head>
+
+<body>
+  <div class="document" id="app">
+    <div class="container">
+      <a href="javascript:" class="btn btn-primary" id="getDataBtn">得到資料</a>
+      <a href="javascript:" class="btn btn-primary" id="postDataBtn">新增資料</a>
+      <a href="javascript:" class="btn btn-primary" id="patchDataBtn">編輯資料</a>
+      <a href="javascript:" class="btn btn-primary" id="deleteDataBtn">刪除資料</a>
+    </div>
+  </div>
+  <script src="vendor/js/axios.min.js"></script>
+  <script>
+    ; (function (global) {
+
+      let
+        getDataBtn = document.querySelector('#getDataBtn'),
+        postDataBtn = document.querySelector('#postDataBtn'),
+        patchDataBtn = document.querySelector('#patchDataBtn'),
+        deleteDataBtn = document.querySelector('#deleteDataBtn');
+
+      let obj = {
+        data: {
+          uuid: 'e6527241-dd52-4bd8-94eb-eb0e02127c72',
+          apiState: 'https://course-ec-api.hexschool.io',
+          token: 'xxx...',
+          products: []
+        },
+        getData() {
+          console.log('得到資料');
+          let vm = obj.data;
+          let url = `${vm.apiState}/api/${vm.uuid}/ec/products`;
+
+          axios.get(url)
+            .then(function (res) {
+              console.log(res);
+            });
+        },
+        postData() {
+          console.log('新增資料');
+          let vm = obj.data;
+          let url = `${vm.apiState}/api/${vm.uuid}/admin/ec/product`;
+          let data = {
+            title: "新增資料測試 TITLE 22",
+            category: "新增資料測試 分類 22",
+            content: "新增資料測試 內容 22",
+            description: "新增資料測試 描述 22",
+            imageUrl: [
+              "https://yaj55billy.github.io/hexo-pic/image/a1.png",
+            ],
+            enabled: true,
+          };
+          axios.defaults.headers['Authorization'] = `Bearer ${vm.token}`;
+          axios.post(url, data)
+            .then(function (res) {
+              console.log(res);
+            }).catch(function (error) {
+              console.log(error);
+            })
+        },
+        patchData() {
+          console.log('編輯資料');
+          let vm = obj.data;
+          let url = `${vm.apiState}/api/${vm.uuid}/admin/ec/product/1dNPMVoK0w8jYaezclhPq98z4CCu57ukTX8HdiVW8Q4y0OD585cw6uY4XLPqc9hf`;
+          let data = {
+            title: "新增資料測試 TITLE 333",
+            category: "新增資料測試 分類 333",
+            content: "新增資料測試 內容 333",
+            description: "新增資料測試 描述 333",
+            imageUrl: [
+              "https://yaj55billy.github.io/hexo-pic/image/a1.png",
+            ],
+            enabled: true,
+          };
+          axios.defaults.headers['Authorization'] = `Bearer ${vm.token}`;
+          axios.patch(url, data)
+            .then(function (res) {
+              console.log(res);
+            }).catch(function (error) {
+              console.log(error);
+            })
+        },
+        deleteData() {
+          console.log('刪除資料');
+          let vm = obj.data;
+          let url = `${vm.apiState}/api/${vm.uuid}/admin/ec/product/f54FMhgH83xcBST6ZorcPlEXiIeSeJd2seVDFSPmiDJAdAlkLfyePpTJQr7GWaxl`;
+          axios.defaults.headers['Authorization'] = `Bearer ${vm.token}`;
+          axios.delete(url)
+            .then(function (res) {
+              console.log(res);
+            }).catch(function (error) {
+              console.log(error);
+            })
+        },
+      };
+
+      getDataBtn.addEventListener('click', obj.getData);
+      postDataBtn.addEventListener('click', obj.postData);
+      patchDataBtn.addEventListener('click', obj.patchData);
+      deleteDataBtn.addEventListener('click', obj.deleteData);
+
+    }(window));
+  </script>
+</body>
+
+</html>
